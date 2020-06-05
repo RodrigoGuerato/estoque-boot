@@ -49,6 +49,7 @@
 									<th>Custo Unitário</th>
 									<th>Preço Venda</th>
 									<th>Validade</th>
+									<th>Saldo em Estoque</th>
 									<th class="center-align">Ações</th>
 								</tr>
 							</thead>
@@ -60,7 +61,8 @@
 										<td>${registro.descricao}</td>
 										<td><fmt:formatNumber value="${registro.custoUnitario}" type="currency"/></td>
 										<td><fmt:formatNumber value="${registro.precoVenda}" type="currency"/></td>	
-										<td><fmt:formatDate value="${dataModificada}" pattern="dd/MM/yyyy" /></td>																		
+										<td><fmt:formatDate value="${dataModificada}" pattern="dd/MM/yyyy" /></td>
+										<td>${registro.saldoAtual}</td>																		
 										<td class="center-align" >
 											<a class="btn-small green" title="alterar" href="${s:mvcUrl('alterarProdutoUrl').arg(0, registro.id).build()}"><i class="material-icons">edit</i></a>
 											<a class="btn-small" title="detalhes"  href="${s:mvcUrl('detalharProdutoUrl').arg(0, registro.id).build()}"><i class="material-icons">more_horiz</i></a>

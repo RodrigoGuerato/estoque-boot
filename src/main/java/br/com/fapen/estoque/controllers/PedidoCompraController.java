@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,7 +29,6 @@ import br.com.fapen.estoque.forms.PedidoFiltroForm;
 import br.com.fapen.estoque.models.ItemPedidoCompra;
 import br.com.fapen.estoque.models.PedidoCompra;
 import br.com.fapen.estoque.repositories.FornecedorRepository;
-import br.com.fapen.estoque.repositories.Paginacao;
 import br.com.fapen.estoque.repositories.ProdutoRepository;
 import br.com.fapen.estoque.services.PedidoCompraService;
 import br.com.fapen.estoque.validations.PedidoCompraFormValidator;
@@ -81,7 +78,6 @@ public class PedidoCompraController {
 	@RequestMapping(method = RequestMethod.GET, name = "listarPedidoCompraUrl")
 	public ModelAndView listar(PedidoFiltroForm filtroForm) {
 
-		String[] teste = {"a","b","c"};
 		ModelAndView mav = new ModelAndView("pedido/lista");
 		Page<PedidoCompra> dados = servicoDePedidos.listar(filtroForm);
 		mav.addObject("listaPaginada", dados);
@@ -91,8 +87,15 @@ public class PedidoCompraController {
 	}
 
 	@RequestMapping(value = "{id}/edit", method = RequestMethod.GET, name = "alterarPedidoCompraUrl")
-	public ModelAndView alterar(@PathVariable Long id, Model model) {
+	public ModelAndView alterar(@PathVariable Long id, Model model, RedirectAttributes atributos) {
 		PedidoCompra registro = servicoDePedidos.findById(id);
+		
+		if (registro.getStatus() != StatusEnum.EM_DIGITACAO) {
+			ModelAndView mav = new ModelAndView("redirect:/pedidos");
+			atributos.addFlashAttribute("mensagemStatus", "Operação não permitida, pois o pedido já foi Recebido/Cancelado");
+			return mav;
+		}	
+		
 		PedidoCompraForm formulario = new PedidoCompraForm(registro);
 		model.addAttribute(formulario);
 		return formulario(formulario);

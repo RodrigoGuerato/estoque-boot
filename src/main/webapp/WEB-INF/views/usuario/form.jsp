@@ -91,7 +91,8 @@
 													<c:forEach items="${usuarioForm.listaPerfil}" var="perfil" varStatus="status"  >
 														<tr>
 															<f:hidden path="listaPerfil[${status.index}].authority"/>
-															<f:hidden path="listaPerfil[${status.index}].descricao"/>				
+															<f:hidden path="listaPerfil[${status.index}].descricao"/>	
+																		
 															<td>${perfil.authority}</td>
 															<td>${perfil.descricao}</td>
 															<td class='center-align'><button class='btn-small red btnDeletePerfil' 

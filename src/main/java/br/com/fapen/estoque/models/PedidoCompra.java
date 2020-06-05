@@ -2,6 +2,7 @@ package br.com.fapen.estoque.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,4 +121,10 @@ public class PedidoCompra {
 	public void setItens(List<ItemPedidoCompra> itens) {
 		this.itens = itens;
 	}
+
+	public String getTexto() {
+		String dataFormatada = this.dataEntrega.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		return String.format("Nº %d - %s - Entrega: %s", this.id, this.getFornecedor().getRazaoSocial(), dataFormatada);
+	}
+
 }

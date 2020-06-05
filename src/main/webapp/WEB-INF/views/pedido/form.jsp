@@ -127,7 +127,7 @@
 				$("select").formSelect();
 			}
 			function erroAjax(dadosErro) {
-				console.log("ERRO" + retornoErro);
+				console.log("ERRO" + dadosErro);
 			}
 			$("body").on("click", ".deletaItem", function(event) {
 				event.preventDefault();

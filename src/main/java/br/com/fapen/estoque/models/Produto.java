@@ -2,8 +2,6 @@ package br.com.fapen.estoque.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,14 +29,14 @@ public class Produto {
 
 	@Column(length = 10)
 	private String categoria;
-	
+
 	@Column(name = "saldo_atual")
 	private Double saldoAtual;
 
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "data_validade")
 	private LocalDate validade;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -95,4 +93,17 @@ public class Produto {
 		this.validade = validade;
 	}
 
+	public void somaSaldo(Double quantidade) {
+		if (this.saldoAtual == null) {
+			this.saldoAtual = 0d;
+		}
+		this.saldoAtual += quantidade;
+	}
+
+	public void subtraiSaldo(Double quantidade) {
+		if (this.saldoAtual == null) {
+			this.saldoAtual = 0d;
+		}
+		this.saldoAtual -= quantidade;
+	}
 }

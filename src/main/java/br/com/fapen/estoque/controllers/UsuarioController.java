@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.fapen.estoque.forms.UsuarioForm;
-import br.com.fapen.estoque.models.Perfil;
 import br.com.fapen.estoque.models.Usuario;
 import br.com.fapen.estoque.repositories.Paginacao;
 import br.com.fapen.estoque.repositories.PerfilRepository;

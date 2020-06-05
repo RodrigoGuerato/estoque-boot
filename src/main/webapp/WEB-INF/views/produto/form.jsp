@@ -12,6 +12,7 @@
 			<br>			
 			<f:form action="${s:mvcUrl('salvarProdutoUrl').build()}" method="post" modelAttribute="produto">
 				<f:hidden path="id"/>
+				<f:hidden path="saldoAtual" />
 				
 				<div class="row">
 					<div class="col s12">

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,6 +23,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @DynamicUpdate
 @Entity(name = "t_usuario")
 public class Usuario implements UserDetails {
+
+	private static final long serialVersionUID = -3452715229790861342L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

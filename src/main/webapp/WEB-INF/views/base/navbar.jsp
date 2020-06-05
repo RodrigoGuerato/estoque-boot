@@ -10,7 +10,7 @@
 	        <li><a href="${s:mvcUrl('listarFornecedorUrl').build()}">Fornecedores</a></li>
 	        <li><a href="${s:mvcUrl('listarProdutoUrl').build()}">Produtos</a></li>
 	        <li><a href="${s:mvcUrl('listarPedidoCompraUrl').build()}">Pedidos de Compra</a></li>
-	        <li><a href="#">Entrada</a></li>
+	        <li><a href="${s:mvcUrl('listarRecebimentoUrl').build()}">Recebimento</a></li>
 	      	
 	      	<sec:authorize access="!isAuthenticated()">
 	      		<li><a href="${s:mvcUrl('loginUrl').build()} ">Entrar</a></li>
@@ -56,6 +56,8 @@
 <ul class="sidenav" id="mobile-demo">
 	<li><a href="${s:mvcUrl('listarFornecedorUrl').build()}">Fornecedores</a></li>
 	<li><a href="${s:mvcUrl('listarProdutoUrl').build()}">Produtos</a></li>
+	<li><a href="${s:mvcUrl('listarPedidoCompraUrl').build()}">Pedidos de Compra</a></li>
+	<li><a href="${s:mvcUrl('listarRecebimentoUrl').build()}">Recebimento</a></li>
 	      	
 	<sec:authorize access="!isAuthenticated()">
 		<li><a href="${s:mvcUrl('loginUrl').build()} ">Entrar</a></li>
