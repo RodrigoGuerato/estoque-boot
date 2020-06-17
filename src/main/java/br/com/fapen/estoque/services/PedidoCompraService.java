@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.fapen.estoque.enums.StatusEnum;
 import br.com.fapen.estoque.forms.PedidoCompraForm;
@@ -39,6 +40,10 @@ public class PedidoCompraService {
 		pedido.setValorTotal(total);
 	}
 
+	public void salvar(PedidoCompra pedido) {
+		repPedidos.save(pedido);
+	}
+
 	public void salvar(PedidoCompraForm pedidoCompraForm) {
 		pedidoCompraForm.getPedidoCompra().getItens().clear();
 		for (ItemPedidoCompra item : pedidoCompraForm.getItensPedidoCompra()) {
@@ -47,6 +52,10 @@ public class PedidoCompraService {
 		}
 		this.calcularTotal(pedidoCompraForm.getPedidoCompra());
 		repPedidos.save(pedidoCompraForm.getPedidoCompra());
+	}
+
+	public List<PedidoCompra> listar() {
+		return repPedidos.findAll();
 	}
 
 	public Page<PedidoCompra> listar(PageRequest paginacao) {

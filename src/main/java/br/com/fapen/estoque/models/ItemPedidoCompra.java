@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name = "t_pedido_compra_itens")
 public class ItemPedidoCompra {
 
@@ -16,6 +18,7 @@ public class ItemPedidoCompra {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@JsonIgnore
 	@ManyToOne
 	private PedidoCompra pedido;
 

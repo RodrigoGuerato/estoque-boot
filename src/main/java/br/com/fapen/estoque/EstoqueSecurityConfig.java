@@ -64,6 +64,7 @@ public class EstoqueSecurityConfig extends WebSecurityConfigurerAdapter {
 			http.antMatcher("/api/**").authorizeRequests()
 				.antMatchers("/api/usuarios/login").permitAll()
 				.antMatchers("/api/produtos/**").permitAll()
+				.antMatchers("/api/pedidos/**").permitAll()
 				.anyRequest().authenticated()
 				.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

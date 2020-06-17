@@ -20,6 +20,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @DynamicUpdate
 @Entity(name = "t_usuario")
 public class Usuario implements UserDetails {
@@ -33,6 +35,7 @@ public class Usuario implements UserDetails {
 	@Column(name = "login", length = 45)
 	private String username;
 
+	@JsonIgnore
 	@Column(name = "senha", updatable = false)
 	private String password;
 

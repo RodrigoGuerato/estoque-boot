@@ -6,10 +6,23 @@ import br.com.fapen.estoque.models.Produto;
 
 public class ItemRecebimentoForm {
 
+	private Boolean confirmado;
 	private Produto produto;
 	private Double quantidade;
 	private BigDecimal precoUnitario;
 	private BigDecimal valorTotal;
+
+	public ItemRecebimentoForm() {
+		this.confirmado = false;
+	}
+
+	public Boolean getConfirmado() {
+		return confirmado;
+	}
+
+	public void setConfirmado(Boolean confirmado) {
+		this.confirmado = confirmado;
+	}
 
 	public Produto getProduto() {
 		return produto;

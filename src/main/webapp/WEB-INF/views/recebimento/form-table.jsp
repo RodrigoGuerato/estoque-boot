@@ -10,6 +10,7 @@
 		<table class="responsive-table">
 		    <thead>
 			    <tr>
+			    	<th>OK ?</th>
 				    <th style="width:400px;">Produto</th>
 				    <th>Quantidade</th>
 				    <th>Valor Unitário</th>
@@ -22,6 +23,13 @@
 		    			<f:hidden path="itens[${status.index}].produto"/>
 		    			<f:hidden path="itens[${status.index}].valorTotal"/>
 		    		
+		    			<td>
+		    				<label>
+        						<input type="checkbox" class="filled-in" name="itens[${status.index}].confirmado" />
+        						<span></span>
+      						</label>
+		    			</td>
+		    			
 		    			<td>${itemReceb.produto.descricao}</td>
 		    			<td>
 		    				<div class="input-field">

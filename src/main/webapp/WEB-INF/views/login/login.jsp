@@ -13,6 +13,12 @@
 						<p>${msgSenha}</p>					
 					</c:if>
 					
+					<c:if test="${param.error != null}">
+						<div class="red">
+							<p>Usuário ou senha inválidos</p>
+						</div>
+					</c:if> 
+					
 					<div class="card">
 						<div class="card-content">
 							<span class="card-title">Entrar no Sistema</span>

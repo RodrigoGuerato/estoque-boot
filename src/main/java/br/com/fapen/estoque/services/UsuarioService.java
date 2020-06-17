@@ -3,6 +3,7 @@ package br.com.fapen.estoque.services;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +31,10 @@ public class UsuarioService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario usuarioBuscado = usuarioRep.findByUsername(username);
 		return usuarioBuscado;
+	}
+	
+	public List<Usuario> findAll() {
+		return usuarioRep.findAll();
 	}
 
 	public Usuario loadUserByEmail(String email) {
