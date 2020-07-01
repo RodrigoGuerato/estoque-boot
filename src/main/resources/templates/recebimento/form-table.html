@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<form action="#" method="POST" th:object="${recebimentoForm}">
+		<div id="dadosRegistro">
+			<table class="responsive-table">
+			    <thead>
+				    <tr>
+				    	<th>OK ?</th>
+					    <th style="width:400px;">Produto</th>
+					    <th>Quantidade</th>
+					    <th>Valor Unitário</th>
+					    <th>Valor Total</th>									
+				    </tr>											
+			    </thead>
+			    <tbody>
+		    		<tr th:each="itemReceb, status : ${recebimentoForm.itens}">
+		    			<input type="hidden" th:field="*{itens[__${status.index}__].produto}"/>
+		    			<input type="hidden" th:field="*{itens[__${status.index}__].valorTotal}"/>
+		    			
+		    			<td>
+		    				<label>
+	       						<input type="checkbox" class="filled-in" name="*{itens[__${status.index}__].confirmado}"/>
+	       						<span></span>
+	     						</label>
+		    			</td>											    		
+		    			<td th:text="${itemReceb.produto.descricao}"></td>
+		    			<td>
+		    				<div class="input-field">
+		    					<input type="number" th:field="*{itens[__${status.index}__].quantidade}" step="1"/>
+		    					<span th:errors="*{itens[__${status.index}__].quantidade}" class="helper-text"></span>
+		    				</div>
+		    			</td>
+		    			<td>
+		    				<div class="input-field">
+		    					<input type="number" th:field="*{itens[__${status.index}__].precoUnitario}" step="0.01"/>
+		    					<span th:errors="*{itens[__${status.index}__].precoUnitario}" class="helper-text"></span>
+		    				</div>		    				
+		    			</td>
+		    			<td class="right-align vlrTotal" th:text="${#numbers.formatCurrency(itemReceb.valorTotal)}"></td>
+		    		</tr>
+			    </tbody>
+		    </table>									
+		</div>
+	</form>
+</html>

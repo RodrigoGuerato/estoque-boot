@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+	
+		<div class="container">
+			
+			<div sec:authorize="isAuthenticated()">
+				<div class="row">
+					<div class="col s12">
+						<h1>Estou sendo exibido porque o usuário esta logado</h1>
+						<p>Usuario Logado: <span th:text="${#authentication.principal.nomeCompleto}">Nome</span></p>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+	
+		<div th:replace="fragments/scripts"></div>
+	</body>
+</html>

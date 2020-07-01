@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<h5 th:text="'Recebimento Nº ' + ${registro.id}"></h5>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12">
+					<ul>
+						<li><strong>Série NF:</strong> <span th:text="${registro.serieNotaFiscal}"></span></li>
+						<li><strong>Núumero NF:</strong> <span th:text="${registro.numeroNotaFiscal}"></span></li>
+						<li><Strong>Data NF:</Strong> <span th:text="${#temporals.format(registro.dataNotaFiscal, 'dd/MM/yyyy')}"></span></li>
+						<li><Strong>Número Pedido:</Strong> <span th:text="${registro.pedido.id}"></span></li>	
+						<li><Strong>Fornecedor:</Strong> <span th:text="${registro.pedido.fornecedor.razaoSocial}"></span></li>
+						<li><Strong>Recebido em:</Strong> <span th:text="${#temporals.format(registro.dataRecebimento, 'dd/MM/yyyy')}"></span></li>
+					</ul>			
+				</div>		
+			</div>		
+			<div class="row">
+				<div class="col s12 responsive-table">
+					<table>
+						<thead>
+							<tr>
+								<th>Produto</th>
+								<th>Descrição</th>
+								<th>Valor Unit.</th>
+								<th>Qtde.</th>
+								<th>Total</th>
+							</tr>						
+						</thead>
+						<tbody>
+							<tr th:each="itemNF : ${registro.itensNotaFiscal}">
+								<td th:text="${itemNF.produto.id}"></td>
+								<td th:text="${itemNF.produto.descricao}"></td>
+								<td th:text="${#numbers.formatCurrency(itemNF.precoUnitario)}"></td>
+								<td th:text="${itemNF.quantidade}"></td>
+								<td th:text="${#numbers.formatCurrency(itemNF.valorTotal)}"></td>
+							</tr>						
+						</tbody>				
+					</table>
+				</div>
+			</div>			
+			<div>
+				<a class="btn btn-warning" th:href="${#mvc.url('listarRecebimentoUrl').build()}">voltar</a>
+			</div>
+		</div>
+		<div th:replace="fragments/scripts"></div>
+	</body>
+</html>

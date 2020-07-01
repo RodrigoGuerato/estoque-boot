@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<div class="row" th:if="${listaPaginada.hasContent()}">
+		<div class="col s12">
+	        <ul class="pagination">
+	        	<li th:class="${listaPaginada.hasPrevious()} ? '' : 'disabled'">
+	        		<a th:href="'?busca=' + ${busca} + '&pagina=' + ${listaPaginada.getNumber()}"><i class="material-icons">chevron_left</i></a>
+	        	</li>
+				
+				<li th:each="p : ${#numbers.sequence(0, listaPaginada.getTotalPages()-1)}" th:class="${p == listaPaginada.getNumber()} ? 'active' : ''">
+					<a th:href="'?busca=' + ${busca} + '&pagina=' + ${p+1}" th:text="${p+1}">1</a>
+				</li>
+				
+				<li th:class="${listaPaginada.hasNext()} ? '' : 'disabled'">
+					<a th:href="'?busca=' + ${busca} + '&pagina=' + ${listaPaginada.getNumber()+2}"><i class="material-icons">chevron_right</i></a>
+				</li>
+	        </ul>				
+		</div>
+	</div>
+</html>

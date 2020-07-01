@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<h5>Pedido de Compra Nº <span th:text="${registro.id}"></span></h5>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12">
+					<ul>
+						<li><Strong>Fornecedor:</Strong> <span th:text="${registro.fornecedor.razaoSocial}"></span></li>
+						<li><Strong>Previsão Entrega:</Strong> <span th:text="${#temporals.format(registro.dataEntrega, 'dd/MM/yyyy')}"></span></li>
+						<li><Strong>Condição de Pagamento:</Strong> <span th:text="${registro.condicaoPagamento.displayValue}"></span></li>
+						<li><Strong>Status:</Strong> <span th:text="${registro.status.displayValue}"></span></li>
+						<li><Strong>Valor Total:</Strong> <span th:text="${#numbers.formatCurrency(registro.valorTotal)}"></span></li>
+					</ul>			
+				</div>		
+			</div>		
+			<div class="row">
+				<div class="col s12 responsive-table">
+					<table>
+						<thead>
+							<tr>
+								<th>Produto</th>
+								<th>Descrição</th>
+								<th>Valor Unit.</th>
+								<th>Qtde.</th>
+								<th>Total</th>
+							</tr>						
+						</thead>
+						<tbody>
+							<tr th:each="itemPed : ${registro.itens}">
+								<td th:text="${itemPed.produto.id}"></td>
+								<td th:text="${itemPed.produto.descricao}"></td>
+								<td th:text="${#numbers.formatCurrency(itemPed.precoUnitario)}"></td>
+								<td th:text="${itemPed.quantidade}"></td>
+								<td th:text="${#numbers.formatCurrency(itemPed.precoTotal)}"></td>
+							</tr>						
+						</tbody>				
+					</table>
+				</div>
+			</div>			
+			<div>
+				<a class="btn btn-warning" th:href="${#mvc.url('listarPedidoCompraUrl').build()}">voltar</a>
+			</div>
+		</div>
+		<div th:replace="fragments/scripts"></div>
+	</body>
+</html>

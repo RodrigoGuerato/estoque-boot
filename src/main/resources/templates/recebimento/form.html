@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+	
+		<div class="container">			
+			<br>		
+			<form th:action="${#mvc.url('salvarRecebimentoUrl').build()}" method="POST" th:object="${recebimentoForm}">
+				<input type="hidden" th:field="*{id}"/>
+				
+				<div class="row">
+					<div class="col s12">
+						<div class="card">
+							<div class="card-content">
+							
+								<span class="card-title center-align">Dados do Recebimento</span>								
+								<div class="row">
+									<div class="input-field col s3">
+										<label class="active" for="serieNotaFiscal">Série NF</label>
+										<input type="number" th:field="*{serieNotaFiscal}" class="validate"/>
+										<span th:errors="*{serieNotaFiscal}" class="helper-text"></span>
+									</div>								
+									<div class="input-field col s3">
+										<label class="active" for="numeroNotaFiscal">Número NF</label>
+										<input type="number" th:field="*{numeroNotaFiscal}" class="validate"/>
+										<span th:errors="*{numeroNotaFiscal}" class="helper-text"></span>
+									</div>								
+									<div class="input-field col s3">
+										<label class="active" for="dataNotaFiscal">Data NF</label>
+										<input th:field="*{dataNotaFiscal}" class="validate datepicker"/>
+										<span th:errors="*{dataNotaFiscal}" class="helper-text"></span>
+									</div>								
+									<div class="input-field col s3">
+										<label class="active" for="dataRecebimento">Data Recebimento</label>
+										<input th:field="*{dataRecebimento}" class="validate datepicker"/>
+										<span th:errors="*{dataRecebimento}" class="helper-text"></span>
+									</div>								
+								</div>
+								
+								<div class="row">
+									<div class="input-field col s12">
+										<select th:field="*{pedido}" class="validate">
+											<option value="">Selecione</option>
+											<option th:each="ped : ${listaPedidos}" th:value="${ped.id}" th:text="${ped.texto}"></option>
+										</select>										
+										<label for="pedido">Pedido de Compra</label>
+										<span th:errors="*{pedido}" class="helper-text"></span>
+									</div>
+								</div>								
+								<span th:errors="*{itens}" class="helper-text"></span>
+								
+								<span class="card-title center-align">Itens</span>								
+								<div class="row">
+									<div class="col s12">
+										<div id="dadosTabela">
+											<table class="responsive-table">
+											    <thead>
+												    <tr>
+												    	<th>OK ?</th>
+													    <th style="width:400px;">Produto</th>
+													    <th>Quantidade</th>
+													    <th>Valor Unitário</th>
+													    <th>Valor Total</th>									
+												    </tr>											
+											    </thead>
+											    <tbody>
+										    		<tr th:each="itemReceb, status : ${recebimentoForm.itens}">
+										    			<input type="hidden" th:field="*{itens[__${status.index}__].produto}"/>
+										    			<input type="hidden" th:field="*{itens[__${status.index}__].valorTotal}"/>
+										    			
+										    			<td>
+										    				<label>
+								        						<input type="checkbox" class="filled-in" name="*{itens[__${status.index}__].confirmado}"/>
+								        						<span></span>
+								      						</label>
+										    			</td>											    		
+										    			<td th:text="${itemReceb.produto.descricao}"></td>
+										    			<td>
+										    				<div class="input-field">
+										    					<input type="number" th:field="*{itens[__${status.index}__].quantidade}" step="1"/>
+										    					<span th:errors="*{itens[__${status.index}__].quantidade}" class="helper-text"></span>
+										    				</div>
+										    			</td>
+										    			<td>
+										    				<div class="input-field">
+										    					<input type="number" th:field="*{itens[__${status.index}__].precoUnitario}" step="0.01"/>
+										    					<span th:errors="*{itens[__${status.index}__].precoUnitario}" class="helper-text"></span>
+										    				</div>		    				
+										    			</td>
+										    			<td class="right-align vlrTotal" th:text="${#numbers.formatCurrency(itemReceb.valorTotal)}"></td>
+										    		</tr>
+											    </tbody>
+										    </table>									
+										
+										</div>									
+									</div>								
+								</div>			
+								
+							</div>
+							<div class="card-action">
+								<input class="btn-small green" type="submit" value="Confirmar">
+								<a th:href="${#mvc.url('listarRecebimentoUrl').build()}" class="btn-small orange">voltar</a>
+							</div>
+						</div>					
+					</div>				
+				</div>			
+			</form>				
+		</div>
+	
+		<div th:replace="fragments/scripts"></div>
+		<script type="text/javascript">
+			//+-------------------------------------------------+
+			//| Funcao para atualizar a tabela obtida pelo Ajax |
+			//+-------------------------------------------------+
+			function atualizaTabelaItens(dadosRetorno) {
+				var cHtml = $(dadosRetorno).find("#dadosRegistro").html();
+				$("#dadosTabela").html(cHtml);
+				$("select").formSelect();
+			}
+			
+			//+---------------------------------------------+
+			//| Funcao executada quando ocorre erro no Ajax |
+			//+---------------------------------------------+
+			function erroAjax(dadosErro) {
+				console.log("Deu Pane " + dadosErro);
+			}
+			
+			//+--------------------------------------------------------------------+
+			//| Funcao que calcula o total da linha e ajusta os campos necessarios |
+			//+--------------------------------------------------------------------+
+			function calculaValorTotal(elementoLinha) {
+				var elQuantidade    = elementoLinha.find("input[name$='quantidade']");
+				var elPrecoUnitario = elementoLinha.find("input[name$='precoUnitario']");
+				var elValorTotal    = elementoLinha.find("input[name$='valorTotal']");
+				var valorCalculado  = elQuantidade.val() * elPrecoUnitario.val();
+				
+				elValorTotal.val(valorCalculado);
+				elementoLinha.find(".vlrTotal").html("R$&nbsp;" + valorCalculado.toFixed(2).replace(".",",")); 
+			}
+			
+			//+------------------------------------------------------------------------+
+			//| Quando alterar o Pedido, buscar os itens e carregar a tabela, via AJAX |
+			//+------------------------------------------------------------------------+
+			$("body").on("change", "#pedido", function(event) {
+				$.ajax({
+					type : "POST",
+					data : $("form").serialize(),
+					url : "/recebimento/carregaItens",
+					success : atualizaTabelaItens,
+					error : erroAjax					
+				});				
+			});
+			
+			//+------------------------------------------------------------------+
+			//| Atualizar o preco total de acordo com a quantidade/precoUnitario |
+			//+------------------------------------------------------------------+
+			//| Qualquer elemento input que o name termina com "quantidade"      |
+			//+------------------------------------------------------------------+
+			$("body").on("change", "input[name$='quantidade']", function(event) {
+				var elementoLinha = $(this).closest("tr");
+				calculaValorTotal(elementoLinha);
+			});
+			$("body").on("change", "input[name$='precoUnitario']", function(event) {
+				var elementoLinha = $(this).closest("tr");
+				calculaValorTotal(elementoLinha);
+			});
+		
+		</script>
+	</body>
+</html>

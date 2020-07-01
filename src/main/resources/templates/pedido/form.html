@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+	
+		<div class="container">			
+			<br>			
+			<form th:action="${#mvc.url('salvarPedidoCompraUrl').build()}" method="post" th:object="${pedidoCompraForm}">
+
+				<input type="hidden" th:field="*{pedidoCompra.id}"/>
+				<div class="row">
+					<div class="col s12">
+					
+						<div class="card">
+							<div class="card-content">
+								<span class="card-title center-align">Dados do Pedido - Nº: <span th:text="${pedidoCompraForm.pedidoCompra.id}"></span></span>
+								
+								<div class="row">
+									<div class="input-field col s12">
+										<select th:field="*{pedidoCompra.fornecedor}" class="validate">
+											<option value="">Selecione</option>
+											<option th:each="forn : ${listaDeFornecedores}" th:value="${forn.id}" th:text="${forn.razaoSocial}"></option>
+										</select>												
+										<label for="pedidoCompra.fornecedor">Fornecedor</label>
+										<span th:errors="*{pedidoCompra.fornecedor}" class="helper-text"></span>
+									</div>
+								</div>	
+								<div class="row">
+									<div class="input-field col s3">
+										<input type="text" th:field="*{pedidoCompra.dataEntrega}" class="validate datepicker" />
+										<label for="pedidoCompra.dataEntrega">Entrega</label>
+										<span th:errors="*{pedidoCompra.dataEntrega}" class="helper-text"></span>
+									</div>
+									<div class="input-field col s9">
+										<select th:field="*{pedidoCompra.condicaoPagamento}" class="validate">
+											<option value="">Selecione</option>
+											<option th:each="cond : ${listaDeCondicaoPagto}" th:value="${cond}" th:text="${cond.displayValue}"></option>
+										</select>												
+										<label for="pedidoCompra.condicaoPagamento">Condição de Pagamento</label>
+										<span th:errors="*{pedidoCompra.condicaoPagamento}" class="helper-text"></span>
+									</div>
+								</div>	
+								<div class="row">
+									<div class="input-field col s12">
+										<textarea th:field="*{pedidoCompra.observacao}" class="validate materialize-textarea"></textarea>
+										<label for="pedidoCompra.observacao">Observações</label>
+										<span th:errors="*{pedidoCompra.observacao}" class="helper-text"></span>
+									</div>
+								</div>	
+								
+								<span class="card-title center-align">
+									Itens
+									<button id="btnNovoItem" type="button" class="btn-floating btn-small waves-effect waves-light right" title="Novo Item">
+										<i class="material-icons">add</i>
+									</button>									
+								</span>
+								<div class="row">
+									<div class="col s12">
+										<span th:errors="*{itensPedidoCompra}"></span>
+										<div id="dadosItens">
+											<div class="card" th:each="itemPedido, status : ${pedidoCompraForm.itensPedidoCompra}">
+												<div class="card-content">
+													<input type="hidden" th:field="*{itensPedidoCompra[__${status.index}__].id}"/>
+													<input type="hidden" th:field="*{itensPedidoCompra[__${status.index}__].pedido}"/>
+													<div class="row">
+														<div class="input-field col s4">
+															<select th:field="*{itensPedidoCompra[__${status.index}__].produto}" class="validate">
+																<option value="">Selecione</option>
+																<option th:each="prod : ${listaDeProdutos}" th:value="${prod.id}" th:text="${prod.descricao}"></option>
+															</select>												
+															<label class="active" for="itensPedidoCompra[__${status.index}__].produto">Produto</label>
+															<span th:errors="*{itensPedidoCompra[__${status.index}__].produto}" class="helper-text"></span>
+														</div>
+														
+														<div class="input-field col s3">
+															<input type="number" th:field="*{itensPedidoCompra[__${status.index}__].quantidade}" class="validate"/>
+															<label class="active" for="itensPedidoCompra[__${status.index}__].quantidade">Quantidade</label>
+															<span th:errors="*{itensPedidoCompra[__${status.index}__].quantidade}" class="helper-text"></span>
+														</div>
+														
+														<div class="input-field col s3">
+															<input disabled type="number" th:field="*{itensPedidoCompra[__${status.index}__].precoUnitario}" class="validate"/>
+															<label class="active" for="itensPedidoCompra[__${status.index}__].precoUnitario">Valor Unitário</label>
+															<span th:errors="*{itensPedidoCompra[__${status.index}__].precoUnitario}" class="helper-text"></span>
+														</div>
+														
+														<div class="input-field col s2">
+															<button class="btn-small red deletaItem" title="excluir" type="button" th:value="${status.index}">
+																<i class="material-icons">delete</i>
+															</button>
+														</div>
+													</div>													
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+							</div>							
+							<div class="card-action">
+								<input class="btn-small green" type="submit" value="Salvar">
+								<a th:href="${#mvc.url('listarPedidoCompraUrl').build()}" class="btn-small orange">voltar</a>
+							</div>
+						</div>
+					
+					</div>				
+				</div>			
+				
+			</form>
+		</div>
+			
+		<div th:replace="fragments/scripts"></div>
+		<script type="text/javascript">
+			function montaGradeItens(retorno) {
+				var cHtml = $(retorno).find("#dadosRegistro").html();
+				$("#dadosItens").html(cHtml);
+				$("select").formSelect();
+			}
+			function erroAjax(dadosErro) {
+				console.log("ERRO" + dadosErro);
+			}
+			$("body").on("click", ".deletaItem", function(event) {
+				event.preventDefault();
+				$.ajax({
+					type : "POST",
+					data : $("form").serialize(),
+					url : "/pedidos/deletaItem/" + $(this).val(),
+					success : montaGradeItens,
+					error : erroAjax
+				});						
+			});	
+			$("body").on("click", "#btnNovoItem", function(event) {
+				event.preventDefault();
+				$.ajax({
+					type : "POST",
+					data : $("form").serialize(),
+					url : "/pedidos/novoItem",
+					success : montaGradeItens,
+					error : erroAjax
+				});					
+			});
+			
+			$("body").on("change", "select[name$='produto']", function(event) {
+				var elementoProduto = $(this);
+				var elementoPrecoUnitario = $(this).closest(".row").find("input[name$='precoUnitario']");
+				
+				$.ajax({
+					type : "GET",
+					url : "/api/produtos/" + elementoProduto.val(),
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+					success : function(dados) {
+						elementoPrecoUnitario.val(dados.custoUnitario);
+					},
+					error : erroAjax
+				});						
+			});		
+		</script>		
+	</body>
+</html>

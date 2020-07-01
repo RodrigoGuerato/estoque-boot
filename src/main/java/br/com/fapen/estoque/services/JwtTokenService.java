@@ -20,8 +20,7 @@ public class JwtTokenService implements Serializable {
     private static final long serialVersionUID = -1652413099019301057L;
     public static final long TEMPO_VALIDADE_TOKEN = 5 * 60 * 60; // 5 Horas
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private String secret = "secretJWT";
 
     // retorna o username do token jwt
     public String getUsernameFromToken(String token) {

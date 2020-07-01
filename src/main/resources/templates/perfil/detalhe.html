@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+		<div class="container">
+			<div>
+				<h4>Dados do Perfil</h4>
+			</div>
+			<div>
+				<ul>
+					<li>Id: <span th:text="${registro.authority}"></span></li>
+					<li>Descrição: <span th:text="${registro.descricao}"></span></li>
+				</ul>
+			</div>
+			<div>
+				<a class="btn btn-warning" th:href="${#mvc.url('listarPerfilUrl').build()}">voltar</a>
+			</div>
+		</div>
+		<div th:replace="fragments/scripts"></div>
+	</body>
+</html>

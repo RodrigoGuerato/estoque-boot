@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+		<div class="container">
+			<div>
+				<h4>Dados do Fornecedor</h4>
+			</div>
+			<div>
+				<ul>
+					<li>Id: <span th:text="${fornecedor.id}"></span></li>
+					<li>Razão Social: <span th:text="${fornecedor.razaoSocial}"></span></li>
+					<li>Nome Fantasia: <span th:text="${fornecedor.nomeFantasia}"></span></li>
+					<li>CNPJ: <span th:text="${fornecedor.cnpj}" class="fmt-cnpj"></span></li>
+				</ul>
+			</div>
+			<div>
+				<a class="btn btn-warning" href="${#mvc.url('listarFornecedorUrl').build()}">voltar</a>
+			</div>
+		</div>
+		<div th:replace="fragments/scripts"></div>
+	</body>
+</html>

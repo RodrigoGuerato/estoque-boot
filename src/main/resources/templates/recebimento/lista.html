@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+		
+		<div class="container">
+			<br>
+			<div th:replace="fragments/alertas"></div>
+			
+			<div class="row">
+				<div class="input-field col s6">
+					<h5>Recebimento</h5>
+				</div>
+				<div class="input-field col s3 offset-s3">
+					<a class="btn-floating btn-large waves-effect waves-light red right" title="novo" th:href="${#mvc.url('novoRecebimentoUrl').build()}">
+						<i class="material-icons">add</i>
+					</a>
+				</div>
+			</div>	
+			
+			<div class="row">
+				<div class="col s12">
+					<ul class="collapsible">
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">filter_list</i>Filtros
+							</div>
+							<div class="collapsible-body">
+								<form method="GET" th:object="${recebimentoFiltroForm}" id="formFiltro">
+									<input type="hidden" th:field="*{pagina}"/>
+									<input type="hidden" th:field="*{novoFiltro}"/>
+									
+									<div class="row">
+										<div class="input-field col s4">
+											<label>
+												<input type="radio" th:field="*{tipoFiltro}" value="RS" />
+												<span>Razão Social</span>
+											</label>
+										</div>	
+										<div class="input-field col s8">
+											<label class="active" for="razaoSocial">Razão Social</label>
+											<input type="text" th:field="*{razaoSocial}" class="validate"/>
+										</div>
+									</div>
+									<div class="row">
+										<div class="input-field col s4">
+											<label>
+												<input type="radio" th:field="*{tipoFiltro}" value="DT" />
+												<span>Data de Entrega</span>
+											</label>
+										</div>	
+										<div class="input-field col s4">
+											<label class="active" for="dataInicial">Recebimento (Inicial)</label>
+											<input type="text" th:field="*{dataInicial}" class="validate datepicker"/>
+										</div>	
+										<div class="input-field col s4">
+											<label class="active" for="dataFinal">Recebimento (Final)</label>
+											<input type="text" th:field="*{dataFinal}" class="validate datepicker"/>
+										</div>	
+									</div>
+									<div class="row">
+										<div class="col s12">
+											<button class="btn-small right" type="button" id="btnFiltro">Pesquisar</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</li>
+					</ul>				
+				</div>			
+			</div>		
+			<div class="row" th:if="${!listaPaginada.isEmpty()}">
+				<div class="responsive-table col s12">
+					<table>
+						<thead>
+							<tr>
+								<th>Série NF</th>
+								<th>Número NF</th>
+								<th>Data NF</th>
+								<th>Nº Pedido</th>
+								<th>Fornecedor</th>
+								<th>Recebimento</th>
+								<th class="center-align">Ações</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="registro : ${listaPaginada}">
+								<td th:text="${registro.serieNotaFiscal}"></td>
+								<td th:text="${registro.numeroNotaFiscal}"></td>
+								<td th:text="${#temporals.format(registro.dataNotaFiscal, 'dd/MM/yyyy')}"></td>
+								<td th:text="${registro.pedido.id}"></td>
+								<td th:text="${registro.pedido.fornecedor.razaoSocial}"></td>
+								<td th:text="${#temporals.format(registro.dataRecebimento, 'dd/MM/yyyy')}"></td>
+								<td class="center-align">
+									<a class="btn-small" title="detalhes" th:href="${#mvc.url('detalharRecebimentoUrl').arg(0, registro.id).build()}"><i class="material-icons">more_horiz</i></a>
+									<button class="btn-small red modal-excluir" title="estornar" type="button" data-target="modalExcluir" 
+										th:data-descr="'Nota Fiscal Nº' + ${registro.numeroNotaFiscal}">
+										<i class="material-icons">delete</i>
+										<form th:action="${#mvc.url('estornoRecebimentoUrl').arg(0, registro.id).build()}" method="post"></form>
+									</button>
+								</td>
+							</tr>			
+						</tbody>	
+					</table>
+				</div>
+			</div>
+			<div th:replace="fragments/paginacao"></div>				
+		</div>
+		<div th:replace="fragments/modalExcluir"></div>	
+	</body>
+	<div th:replace="fragments/scripts"></div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".paginacao").on("click", function(e) {
+				e.preventDefault();
+				var pagina = $(this).data("pagina");
+				
+				//Muda o valor da pagina no formulario
+				$("#pagina").val(pagina);
+				$("#novoFiltro").val("false");
+				$("#formFiltro").submit();
+			});
+			
+			$("#btnFiltro").on("click", function(e) {
+				e.preventDefault();
+				$("#novoFiltro").val("true");
+				$("#formFiltro").submit();
+			});			
+		});	
+	</script>	
+</html>

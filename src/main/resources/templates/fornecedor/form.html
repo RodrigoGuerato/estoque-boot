@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+	
+		<div class="container">			
+			<br>			
+			<form th:action="${#mvc.url('salvarFornecedorUrl').build()}" method="POST" th:object="${fornecedor}">
+				<input type="hidden" th:field="*{id}" />
+				
+				<div class="row">
+					<div class="col s12">
+						<div class="card">
+							<div class="card-content">
+								<span class="card-title center-align">Dados do Fornecedor</span>
+								
+								<div class="row">
+									<div class="input-field col s12">
+										<input type="text" th:field="*{razaoSocial}" class="validate" />
+										<span th:errors="*{razaoSocial}" class="helper-text"></span>
+										<label class="active" for="razaoSocial">Razão Social</label>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="input-field col s12">
+										<input th:field="*{nomeFantasia}" class="validate" />
+										<span th:errors="*{nomeFantasia}" class="helper-text"></span>
+										<label class="active" for="nomeFantasia">Nome Fantasia</label>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="input-field col s4">
+										<label class="active" for="cnpj">CNPJ</label>
+										<input th:field="*{cnpj}" class="validate fmt-cnpj" maxlength="14" />
+										<span th:errors="*{cnpj}" class="helper-text"></span>
+									</div>
+									<div class="input-field col s8">
+										<label class="active" for="nomeResponsavel">Responsável</label>
+										<input th:field="*{nomeResponsavel}" class="validate" />
+										<span th:errors="*{nomeResponsavel}" class="helper-text"></span>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="input-field col s2">
+										<label class="active" for="cep">CEP</label>
+										<input th:field="*{endereco.cep}" class="validate fmt-cep" />
+										<span th:errors="*{endereco.cep}" class="helper-text"></span>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="input-field col s12">
+										<label class="active" for="endereco">Endereço</label>
+										<input th:field="*{endereco.endereco}" class="validate" />
+										<span th:errors="*{endereco.endereco}" class="helper-text"></span>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="input-field col s2">
+										<label class="active" for="numero">Número</label>
+										<input th:field="*{endereco.numero}" class="validate" />
+										<span th:errors="*{endereco.numero}" class="helper-text"></span>
+									</div>
+									<div class="input-field col s5">
+										<label class="active" for="complemento">Complemento</label>
+										<input th:field="*{endereco.complemento}" class="validate" />
+										<span th:errors="*{endereco.complemento}" class="helper-text"></span>
+									</div>
+									<div class="input-field col s5">
+										<label class="active" for="bairro">Bairro</label>
+										<input th:field="*{endereco.bairro}" class="validate" />
+										<span th:errors="*{endereco.bairro}" class="helper-text"></span>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="input-field col s8">
+										<label class="active" for="municipio">Municipio</label>
+										<input th:field="*{endereco.municipio}" class="validate" />
+										<span th:errors="*{endereco.municipio}" class="helper-text"></span>
+									</div>
+									<div class="input-field col s4">
+										<label class="active" for="uf">UF</label>
+										<input th:field="*{endereco.uf}" class="validate" />
+										<span th:errors="*{endereco.uf}" class="helper-text"></span>
+									</div>
+								</div>
+								
+							</div>
+								
+							<div class="card-action">
+								<input class="btn-small green" type="submit" value="Salvar">
+								<a th:href="${#mvc.url('listarFornecedorUrl').build()}" class="btn-small orange">voltar</a>
+							</div>
+												
+						</div>
+					</div>				
+				</div>						
+						
+			</form>
+		</div>
+	
+		<div th:replace="fragments/scripts"></div>		
+		<script src="/js/fornecedor/form.js"></script>
+	</body>
+</html>

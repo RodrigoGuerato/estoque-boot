@@ -16,7 +16,7 @@ public class ArquivoService {
 	private ResourceLoader resourceLoader;
 
 	public static final String DIRETORIO_BASE = "/home/rodrigo/dev/media/";
-	public static final String DIRETORIO_TEMPLATE = "/WEB-INF/templateEmail/";
+	public static final String DIRETORIO_TEMPLATE = "classpath:/templates/modeloEmail/";
 
 	public String salvarEmDisco(MultipartFile arquivo) {
 		String realPath = DIRETORIO_BASE;

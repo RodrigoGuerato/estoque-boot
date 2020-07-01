@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<form action="#" method="POST" th:object="${pedidoCompraForm}">
+	
+		<div id="dadosRegistro">
+			<div class="card" th:each="itemPedido, status : ${pedidoCompraForm.itensPedidoCompra}">
+				<div class="card-content">
+					<input type="hidden" th:field="*{itensPedidoCompra[__${status.index}__].id}"/>
+					<input type="hidden" th:field="*{itensPedidoCompra[__${status.index}__].pedido}"/>
+					
+					<div class="row">
+						<div class="input-field col s4">
+							<select th:field="*{itensPedidoCompra[__${status.index}__].produto}" class="validate">
+								<option value="">Selecione</option>
+								<option th:each="prod : ${listaDeProdutos}" th:value="${prod.id}" th:text="${prod.descricao}"></option>
+							</select>												
+							<label class="active" for="itensPedidoCompra[__${status.index}__].produto">Produto</label>
+							<span th:errors="*{itensPedidoCompra[__${status.index}__].produto}" class="helper-text"></span>
+						</div>
+						
+						<div class="input-field col s3">
+							<input type="number" th:field="*{itensPedidoCompra[__${status.index}__].quantidade}" class="validate"/>
+							<label class="active" for="itensPedidoCompra[__${status.index}__].quantidade">Quantidade</label>
+							<span th:errors="*{itensPedidoCompra[__${status.index}__].quantidade}" class="helper-text"></span>
+						</div>
+						
+						<div class="input-field col s3">
+							<input disabled type="number" th:field="*{itensPedidoCompra[__${status.index}__].precoUnitario}" class="validate"/>
+							<label class="active" for="itensPedidoCompra[__${status.index}__].precoUnitario">Valor Unitário</label>
+							<span th:errors="*{itensPedidoCompra[__${status.index}__].precoUnitario}" class="helper-text"></span>
+						</div>
+						
+						<div class="input-field col s2">
+							<button class="btn-small red deletaItem" title="excluir" type="button" th:value="${status.index}">
+								<i class="material-icons">delete</i>
+							</button>
+						</div>
+					</div>													
+				</div>
+			</div>
+		</div>
+		
+	</form>
+</html>

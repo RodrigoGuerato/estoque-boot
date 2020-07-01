@@ -1,0 +1,61 @@
+	<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<nav>
+		<div class="nav-wrapper grey darken-3">
+			<a th:href="${#mvc.url('homeUrl').build()}" class="brand-logo">Gestão Estoque</a> 
+			<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+			<ul class="right hide-on-med-and-down">
+		        <li><a th:href="${#mvc.url('listarFornecedorUrl').build()}">Fornecedores</a></li>
+		        <li><a th:href="${#mvc.url('listarProdutoUrl').build()}">Produtos</a></li>
+		        <li><a th:href="${#mvc.url('listarPedidoCompraUrl').build()}">Pedidos de Compra</a></li>
+		        <li><a th:href="${#mvc.url('listarRecebimentoUrl').build()}">Recebimento</a></li>
+		        
+		      	<li sec:authorize="!isAuthenticated()"><a th:href="${#mvc.url('loginUrl').build()} ">Entrar</a></li>
+		      		
+				<ul id="dropUsuario" class="dropdown-content">
+					<li><a th:href="${#mvc.url('perfilUsuarioUrl').build()}">Detalhes</a></li>
+					
+					<div sec:authorize="hasRole('ROLE_ADMIN')">
+						<li role="separator" class="divider"></li>
+						<li><a th:href="${#mvc.url('listarPerfilUrl').build()}">Perfis de Acesso</a></li>
+						<li><a th:href="${#mvc.url('listarUsuarioUrl').build()}">Usuários</a></li>
+					</div>
+					
+					<li class="divider"></li>
+					<li><a th:href="${#httpServletRequest.getContextPath() + '/logout'}">Sair</a></li>					
+				</ul>
+				
+				<li sec:authorize="isAuthenticated()">
+					<a class="dropdown-trigger valign-wrapper" href="#!" data-target="dropUsuario">
+						<img class="img-perfil" th:src="${#httpServletRequest.getContextPath() + '/' + #authentication.principal.caminhoFoto}" />
+						<span th:text="${#authentication.principal.nomeCompleto}"></span>
+						<i class="material-icons right">arrow_drop_down</i>
+					</a>
+				</li>	      		
+			</ul>
+		</div>
+	</nav>
+	
+	<ul class="sidenav" id="mobile-demo">
+		<li><a th:href="${#mvc.url('listarFornecedorUrl').build()}">Fornecedores</a></li>
+		<li><a th:href="${#mvc.url('listarProdutoUrl').build()}">Produtos</a></li>
+		<li><a th:href="${#mvc.url('listarPedidoCompraUrl').build()}">Pedidos de Compra</a></li>
+		<li><a th:href="${#mvc.url('listarRecebimentoUrl').build()}">Recebimento</a></li>
+		      	
+		<sec:authorize access="!isAuthenticated()">
+			<li><a th:href="${#mvc.url('loginUrl').build()} ">Entrar</a></li>
+		</sec:authorize>
+		
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="user"/>			
+			
+			<sec:authorize access="hasRole('ROLE_ADMIN')" >
+				<li role="separator" class="divider"></li>
+				<li><a href="#">${user.nomeCompleto}</a></li>
+				<li><a th:href="${#mvc.url('listarPerfilUrl').build()}">Perfis de Acesso</a></li>
+				<li><a th:href="${#mvc.url('listarUsuarioUrl').build()}">Usu�rios</a></li>
+			</sec:authorize>
+			<li class="divider"></li>
+			<li><a href="${pageContext.request.contextPath}/logout">Sair</a></li>	
+		</sec:authorize>
+	</ul>
+</html>

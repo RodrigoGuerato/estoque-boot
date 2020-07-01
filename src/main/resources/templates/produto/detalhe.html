@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+		<div class="container">
+			<div>
+				<h4>Dados do Produto</h4>
+			</div>
+			<div>
+				<ul>
+					<li>Id: <span th:text="${produto.id}"></span></li>
+					<li>Descrição: <span th:text="${produto.descricao}"></span></li>
+					<li>Categoria: <span th:text="${produto.categoria}"></span></li>
+					<li>Validade: <span th:text="${produto.validade}"></span></li>
+				</ul>
+			</div>
+			<div>
+				<a class="btn btn-warning" th:href="${#mvc.url('listarProdutoUrl').build()}">voltar</a>
+			</div>
+		</div>
+		<div th:replace="fragments/scripts"></div>
+	</body>
+</html>

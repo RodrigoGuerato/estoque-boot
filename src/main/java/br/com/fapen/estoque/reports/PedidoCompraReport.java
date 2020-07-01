@@ -57,7 +57,7 @@ public class PedidoCompraReport {
 			Table tabelaLayout = new Table(UnitValue.createPercentArray(tamanhoColunas)).useAllAvailableWidth();
 
 			// Logo + Numero do Pedido
-			String logo = resourceLoader.getResource("/WEB-INF/logo-java.jpg").getFile().getAbsolutePath();
+			String logo = resourceLoader.getResource("classpath:static/img/logo-java.jpg").getFile().getAbsolutePath();
 			Image imgLogo = new Image(ImageDataFactory.create(logo));
 			tabelaLayout.addCell(imgLogo.setHeight(50).setHorizontalAlignment(HorizontalAlignment.CENTER));
 			tabelaLayout.addCell(new Paragraph("Pedido de Compra Nº " + pedidoSendoImpresso.getId()).addStyle(titulo));

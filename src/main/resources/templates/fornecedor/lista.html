@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	
+	<body>
+		<div th:replace="fragments/navbar"></div>
+		
+		<div class="container">
+			<br>
+			<div th:replace="fragments/alertas"></div>
+		
+			<div class="row">
+				<div class="input-field col s3">
+					<h5>Fornecedores</h5>
+				</div>
+				<form method="GET">
+					<div class="input-field col s5">
+						<input id="busca" name="busca" type="text" placeholder="Pesquisar por Descrição" th:value="${busca}" >
+					</div>
+					<div class="input-field col s1">
+						<button class="btn-small" type="submit"><i class="material-icons">search</i></button>
+					</div>
+				</form>
+				<div class="input-field col s3">
+					<a class="btn-floating btn-large waves-effect waves-light red right" title="novo" th:href="${#mvc.url('novoFornecedorUrl').build()}">
+						<i class="material-icons">add</i>
+					</a>
+				</div>
+			</div>
+			<div class="row" th:if="${!listaPaginada.isEmpty()}">
+				<div class="responsive-table col s12">
+					<table id="tabFornecedor">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Razão Social</th>
+								<th>Nome Fantasia</th>
+								<th>CNPJ</th>
+								<th class="center-align" >Ações</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="registro : ${listaPaginada}">
+								<td th:text="${registro.id}"></td>
+								<td th:text="${registro.razaoSocial}"></td>
+								<td th:text="${registro.nomeFantasia}"></td>
+								<td th:text="${registro.cnpj}" class="fmt-cnpj"></td>
+								<td class="center-align">
+									<a class="btn-small green" title="alterar" th:href="${#mvc.url('alterarFornecedorUrl').arg(0, registro.id).build()}"><i class="material-icons">edit</i></a>
+									<a class="btn-small" title="detalhes"  th:href="${#mvc.url('detalharFornecedorUrl').arg(0, registro.id).build()}"><i class="material-icons">more_horiz</i></a>
+									<button class="btn-small red modal-excluir" title="excluir" type="button" data-target="modalExcluir" th:data-descr="${registro.razaoSocial}"  >
+										<i class="material-icons">delete</i>
+										<form th:action="${#mvc.url('excluirFornecedorUrl').arg(0, registro.id).build()}" method="post"></form>
+									</button>
+								</td>
+							</tr>			
+						</tbody>	
+					</table>
+				</div>
+			</div>
+			<div th:replace="fragments/paginacao"></div>	
+		</div>
+		<div th:replace="fragments/modalExcluir"></div>	
+	</body>
+	<div th:replace="fragments/scripts"></div>
+</html>

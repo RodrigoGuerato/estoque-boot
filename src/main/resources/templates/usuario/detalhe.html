@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+		<div class="container">
+			<div>
+				<h4>Dados do Usuário</h4>
+			</div>
+			<div>
+				<ul>
+					<li>Id: <span th:text="${registro.id}"></span></li>
+					<li>Login: <span th:text="${registro.username}"></span></li>
+					<li>Nome: <span th:text="${registro.nomeCompleto}"></span></li>
+					<li>email: <span th:text="${registro.email}"></span></li>
+					<li>Nascimento: <span th:text="${#temporals.format(registro.dataNascimento, 'dd/MM/yyyy')}"></span></li>
+				</ul>
+			</div>
+			<div>
+				<a class="btn btn-warning" th:href="${#mvc.url('listarUsuarioUrl').build()}">voltar</a>
+			</div>
+		</div>
+		<div th:replace="fragments/scripts"></div>
+	</body>
+</html>

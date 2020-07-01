@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="fragments/header"></div>
+	<body>
+		<div th:replace="fragments/navbar"></div>
+		<div class="container">			
+			<br>			
+			
+			<form id="formUsuario" th:action="${#mvc.url('salvarUsuarioUrl').build()}" method="post" th:object="${usuarioForm}">
+				<input type="hidden" th:field="*{usuario.id}"/>
+				<input type="hidden" th:field="*{inclusao}"/>
+				
+				<div class="row">
+					<div class="col s12">
+						<div class="card">
+							<div class="card-content">
+								<span class="card-title center-align">Dados do Usuário</span>
+									<div class="row">
+										<div class="input-field col s12">
+											<label for="usuario.username">Login</label>
+											<input type="text" th:field="*{usuario.username}" class="validate"/>
+											<span th:errors="*{usuario.username}" class="helper-text"></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="input-field col s7">
+											<label for="usuario.nomeCompleto">Nome</label>
+											<input type="text" th:field="*{usuario.nomeCompleto}" class="validate"/>
+											<span th:errors="*{usuario.nomeCompleto}" class="helper-text"></span>
+										</div>
+										<div class="input-field col s2">
+											<label for="usuario.dataNascimento">Nascimento</label>
+											<input type="text" th:field="*{usuario.dataNascimento}" class="validate datepicker"/>
+											<span th:errors="*{usuario.dataNascimento}" class="helper-text"></span>
+										</div>
+										<div class="input-field col s3">
+											<label for="usuario.cpf">CPF</label>
+											<input type="text" th:field="*{usuario.cpf}" class="validate fmt-cpf" maxlength="11"/>
+											<span th:errors="*{usuario.cpf}" class="helper-text"></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="input-field col s12">
+											<label for="usuario.email">Email</label>
+											<input type="text" th:field="*{usuario.email}" class="validate"/>
+											<span th:errors="*{usuario.email}" class="helper-text"></span>
+										</div>
+									</div>
+									
+									<div class="row" th:if="${usuarioForm.inclusao}">
+										<div class="input-field col s12">
+											<label for="usuario.password">Senha</label>
+											<input th:field="*{usuario.password}" class="validate" type="password"/>
+											<span th:errors="*{usuario.password}" class="helper-text"></span>
+										</div>
+									</div>
+									
+									<span class="card-title center-align">Perfis de Acesso</span>
+									<div class="row">
+										<div class="input-field col s8">											
+											<select name="" id="perfilSel" >
+												<option th:each="perfil : ${listaDePerfis}" th:value="${perfil.authority}" th:text="${perfil.descricao}"></option>
+											</select>
+											<label for="perfil">Perfil</label>											
+										</div>
+										<div class="input-field col s4">
+											<button type="button" class="btn-small" id="btnAddPerfil">adicionar</button>
+										</div>									
+									</div>
+									<div class="row">
+										<div class="col s12" >
+											<table class="responsive-table" id="tablePerfis">
+												<thead>
+													<tr>
+														<th>Nome</th>
+														<th>Descrição</th>
+														<th class="center-align">Ações</th>
+													</tr>
+												</thead>	
+												<tbody>
+													<tr th:each="perfil, status : *{listaPerfil}">
+														<input type="hidden" th:field="*{listaPerfil[__${status.index}__].authority}"/>
+														<input type="hidden" th:field="*{listaPerfil[__${status.index}__].descricao}"/>	
+																	
+														<td th:text="${perfil.authority}"></td>
+														<td th:text="${perfil.descricao}"></td>
+														<td class='center-align'><button class='btn-small red btnDeletePerfil' 
+															title='excluir' type='button'><i class='material-icons'>delete</i></button></td>            
+													</tr>
+												</tbody>
+											</table>
+										</div>									
+									</div>								
+							</div>
+								
+							<div class="card-action">
+								<input class="btn-small green" type="submit" value="Salvar">
+								<a th:href="${#mvc.url('listarUsuarioUrl').build()}" class="btn-small orange">voltar</a>
+							</div>
+												
+						</div>
+					</div>				
+				</div>	
+									
+			</form>
+		</div>
+		<div th:replace="fragments/scripts"></div>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				
+				$("#btnAddPerfil").click(function() {
+					var count = $("#tablePerfis tbody tr").length;
+					var table = $("#tablePerfis tbody");
+					var cHtml = "";
+					
+					cHtml += "<tr>";
+					cHtml += "	<input type='hidden' id='listaPerfil[" + count + "].authority' name='listaPerfil[" + count + "].authority' value='" + $("#perfilSel").val() + "' />";
+					cHtml += "	<input type='hidden' id='listaPerfil[" + count + "].descricao' name='listaPerfil[" + count + "].descricao' value='" + $("#perfilSel option:selected").text() + "' />";
+					cHtml += "	<td>" + $("#perfilSel").val() + "</td>";
+					cHtml += "	<td>" + $("#perfilSel option:selected").text() + "</td>";
+					cHtml += "	<td class='center-align'><button class='btn-small red btnDeletePerfil' title='excluir' type='button'><i class='material-icons'>delete</i></button></td>";
+					cHtml += "</tr>";
+					table.append(cHtml);
+				});
+				
+				$("#tablePerfis tbody").on("click", "button.btnDeletePerfil", function(botao){
+					$(this).closest("tr").remove();
+				});			
+			});
+		</script>		
+	</body>
+</html>
