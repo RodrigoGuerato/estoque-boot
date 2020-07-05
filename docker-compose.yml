@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:10
+    container_name: "postgres"
+    environment:
+      - POSTGRES_DB=estoque_boot
+      - POSTGRES_USER=rodrigo
+      - POSTGRES_PASSWORD=numsey
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
+    ports:
+      - 5432:5432
